@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+cd "$(dirname "$0")" || exit
+
+cd ../.docker || exit
+
+docker compose exec php "$@"

@@ -1,0 +1,59 @@
+name: recruitday-api
+services:
+    php:
+        image: php:8.3-fpm-alpine
+        # container_name: symfony_php
+        working_dir: /var/www/html
+        volumes:
+            - ../:/var/www/html
+        environment:
+            APP_ENV: dev
+        depends_on:
+            - db
+        # Install common Symfony requirements on container start (simple dev approach)
+        command: >
+            sh -lc "
+              apk add --no-cache bash git unzip icu-dev oniguruma-dev libzip-dev linux-headers $$(apk search -q php83-pecl-*) ||
+                true;
+              docker-php-ext-configure intl;
+              docker-php-ext-install -j$$(nproc) intl pdo pdo_mysql opcache zip;
+              php-fpm
+            "
+
+    nginx:
+        image: nginx:1.27-alpine
+        # container_name: symfony_nginx
+        ports:
+            - "8080:80"
+        volumes:
+            - ../:/var/www/html:ro
+            - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+        depends_on:
+            - php
+
+    db:
+        image: mysql:8.4
+        # container_name: symfony_mysql
+        environment:
+            MYSQL_DATABASE: recruitday
+            MYSQL_USER: rduser
+            MYSQL_PASSWORD: rdpassword
+            MYSQL_ROOT_PASSWORD: root
+        ports:
+            - "3306:3306"
+        volumes:
+            - db_data:/var/lib/mysql
+
+    phpmyadmin:
+        image: phpmyadmin:5
+        # container_name: symfony_phpmyadmin
+        environment:
+            PMA_HOST: db
+            PMA_PORT: 3306
+        ports:
+            - "8081:80"
+        depends_on:
+            - db
+
+volumes:
+    db_data:

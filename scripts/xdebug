@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+cd "$(dirname "$0")" || exit
+
+DISABLED=$(./cli [ -e "/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini-disabled" ] && echo 1 || echo 0);
+
+if [[ "${1}" == "status" ]]; then
+  if [[ $DISABLED == 1 ]]; then
+    echo "Xdebug debug mode is disabled."
+  else
+    echo "Xdebug debug mode is enabled."
+  fi
+  exit 1
+fi
+
+if [[ $DISABLED == 1 ]]; then
+  ./cli mv '/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini-disabled' '/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini'
+  sleep 1
+  cd ../.docker || exit
+  docker-compose restart php
+  echo "Xdebug debug mode has been enabled."
+else
+  ./cli mv '/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini' '/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini-disabled'
+  sleep 1
+  cd ../.docker || exit
+  docker-compose restart php
+  echo "Xdebug debug mode has been disabled."
+fi
