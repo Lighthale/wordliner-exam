@@ -1,4 +1,4 @@
-name: recruitday-api
+name: wordliner-exam
 services:
     php:
         image: php:8.3-fpm-alpine
@@ -54,6 +54,11 @@ services:
             - "8081:80"
         depends_on:
             - db
+
+    redis:
+        image: redis:7.0.0
+        ports:
+            - "6379:6379"
 
 volumes:
     db_data:
