@@ -28,6 +28,8 @@ final class Version20260327023439 extends AbstractMigration
         $this->addSql('ALTER TABLE oauth2_authorization_code ADD CONSTRAINT FK_509FEF5FC7440455 FOREIGN KEY (client) REFERENCES oauth2_client (identifier) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE oauth2_refresh_token ADD CONSTRAINT FK_4DD90732B6A2DD68 FOREIGN KEY (access_token) REFERENCES oauth2_access_token (identifier) ON DELETE SET NULL');
         $this->addSql('ALTER TABLE user CHANGE password password VARCHAR(255) NOT NULL');
+        $this->addSql('INSERT INTO `oauth2_client` (`name`, `secret`, `redirect_uris`, `grants`, `scopes`, `active`, `allow_plain_text_pkce`, `identifier`) VALUES(\'wordliner\', \'8ff7b377e6df0e8362f891dfddf3c114809404fcb2a655279d41e920e1d11cc87a6a07314eeaa6b0e58ed8f7a6e814d37af1836d11c313aac315ae0046c3380e\', NULL, \'password refresh_token client_credentials\', \'read write\', 1, 0, \'8054c571f3304dfcbf922dfa8d8ba935\')');
+        $this->addSql('INSERT INTO `user` (`email`, `roles`, `password`) VALUES(\'admin@wordliner.com\', \'["ROLE_ADMIN"]\', \'$2y$13$DcgSbp4ZprC2JKzi.2.ZnutUJxbQsL8EnUdoZOCaiGKuQJ05m5ZxG\')');
     }
 
     public function down(Schema $schema): void
@@ -40,6 +42,7 @@ final class Version20260327023439 extends AbstractMigration
         $this->addSql('DROP TABLE oauth2_authorization_code');
         $this->addSql('DROP TABLE oauth2_client');
         $this->addSql('DROP TABLE oauth2_refresh_token');
+        $this->addSql('TRUNCATE `user`');
         $this->addSql('ALTER TABLE user CHANGE password password VARCHAR(255) DEFAULT NULL');
     }
 }
