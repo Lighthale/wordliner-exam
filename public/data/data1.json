@@ -1,0 +1,32 @@
+[
+    {
+        "id": 101,
+        "address": "d1foo",
+        "price": 1234.00,
+        "source": "bar source"
+    },
+    {
+        "id": 102,
+        "address": "d1lorem",
+        "price": 1234.00,
+        "source": "lorem source"
+    },
+    {
+        "id": 103,
+        "address": "d1ipsum",
+        "price": 1234.00,
+        "source": "ipsum source"
+    },
+    {
+        "id": 104,
+        "address": "d1dolor",
+        "price": 1234.00,
+        "source": "dolor source"
+    },
+    {
+        "id": 105,
+        "address": "d1sam",
+        "price": 1234.00,
+        "source": "smith source"
+    }
+]
