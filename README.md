@@ -50,5 +50,5 @@ curl --location 'http://localhost:8080/token' \
 7. Properties Endpoint using the access token 
 ```bash
 curl --location 'http://localhost:8080/api/properties' \
---header 'Authorization: [ACCESS_TOKEN]'
+--header 'Authorization: Bearer [ACCESS_TOKEN]'
 ```
